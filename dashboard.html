@@ -1,0 +1,141 @@
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD2TcpaAhIlrC-F1dxy65oZ4GJbH2hKlzM",
+  authDomain: "donor-inc.firebaseapp.com",
+  projectId: "donor-inc",
+  storageBucket: "donor-inc.appspot.com",
+  messagingSenderId: "227070013751",
+  appId: "1:227070013751:web:bedb6053e62e6066cd2ab2",
+  measurementId: "G-XJ4MGS04HL"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Handle form submission (Login)
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const email = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      alert(`Welcome back, ${user.email}!`);
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      if (error.code === 'auth/user-not-found') {
+        showNoAccountPrompt();
+      } else {
+        alert(`Error: ${error.message}`);
+      }
+    });
+});
+
+// Handle sign-up button click
+document.getElementById('signupButton').addEventListener('click', function () {
+  const email = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      db.collection("users").doc(user.uid).set({
+        email: user.email,
+        progress: 0,
+        preferences: {}
+      })
+      .then(() => {
+        alert(`Account created for ${user.email}!`);
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        alert(`Error saving user data: ${error.message}`);
+      });
+    })
+    .catch((error) => {
+      alert(`Error: ${error.message}`);
+    });
+});
+
+// Show prompt for new users
+function showNoAccountPrompt() {
+  document.getElementById('noAccountPrompt').style.display = 'flex';
+}
+
+// Close prompt
+function closePrompt() {
+  document.getElementById('noAccountPrompt').style.display = 'none';
+}
+
+// Create account (via prompt)
+function createAccount() {
+  const email = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      db.collection("users").doc(user.uid).set({
+        email: user.email,
+        progress: 0,
+        preferences: {}
+      })
+      .then(() => {
+        alert(`Account created for ${user.email}!`);
+        closePrompt();
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        alert(`Error saving user data: ${error.message}`);
+      });
+    })
+    .catch((error) => {
+      alert(`Error: ${error.message}`);
+    });
+}
+
+// Social login handlers
+function signInWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      alert(`Welcome, ${user.displayName}!`);
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      alert(`Error: ${error.message}`);
+    });
+}
+
+function signInWithFacebook() {
+  const provider = new firebase.auth.FacebookAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      alert(`Welcome, ${user.displayName}!`);
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      alert(`Error: ${error.message}`);
+    });
+}
+
+function signInWithChatGPT() {
+  alert('ChatGPT login is not supported yet.');
+}
+
+function signInWithDeepseek() {
+  alert('Deepseek login is not supported yet.');
+}
+
+// Check if user is already logged in
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    window.location.href = "dashboard.html";
+  }
+});

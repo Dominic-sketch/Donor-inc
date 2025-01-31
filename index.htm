@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DONOR INC - Learn Coding for Free</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js"></script>
+</head>
+<body>
+  <header>
+    <h1>DONOR INC</h1>
+    <p>Learn Coding for Free - HTML, CSS, Python, Java, and More!</p>
+  </header>
+
+  <main>
+    <section class="description">
+      <h2>Welcome to DONOR INC</h2>
+      <p>
+        DONOR INC is your gateway to free coding education. Whether you're a beginner or an experienced developer, 
+        we offer lessons, code generators, and a code tester to help you master programming languages like HTML, CSS, 
+        Python, Java, and more. Start your coding journey today!
+      </p>
+    </section>
+
+    <section class="login-form">
+      <h2>Login / Sign Up</h2>
+      <form id="loginForm">
+        <label for="username">Email:</label>
+        <input type="email" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe">
+          <label for="rememberMe">Remember Me</label>
+        </div>
+
+        <button type="submit">Login</button>
+        <button type="button" id="signupButton">Sign Up</button>
+      </form>
+
+      <div class="social-login">
+        <p>Or sign in with:</p>
+        <button class="social-btn google" onclick="signInWithGoogle()">Google</button>
+        <button class="social-btn facebook" onclick="signInWithFacebook()">Facebook</button>
+        <button class="social-btn chatgpt" onclick="signInWithChatGPT()">ChatGPT</button>
+        <button class="social-btn deepseek" onclick="signInWithDeepseek()">Deepseek</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Prompt for new users -->
+  <div id="noAccountPrompt" class="prompt-overlay">
+    <div class="prompt-box">
+      <p>You don't have an account. Create one?</p>
+      <button onclick="createAccount()">Create Account</button>
+      <button onclick="closePrompt()">Cancel</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 DONOR INC. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
